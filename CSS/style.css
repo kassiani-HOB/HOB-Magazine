@@ -1,0 +1,49 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --red: #B43430; --bg: #161616; --bar: #0c0c0c;
+  --sw: 256px; --bh: 50px; --sh: 82px;
+  --f: 'Plus Jakarta Sans', Helvetica, sans-serif;
+}
+html, body { height: 100%; overflow: hidden; background: var(--bg); font-family: var(--f); }
+
+/* ... (Include all your existing CSS for #bar, #shell, #sb, #vw, #sp, .pg, #strip, #pn here) ... */
+
+/* Make videos responsive within the page container */
+.pg video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========================================
+   RESPONSIVE DESIGN (MOBILE & TABLET)
+   ========================================= */
+@media (max-width: 768px) {
+  /* Shrink the header */
+  .bl .v { display: none; } /* Hide volume text on mobile */
+  #blabel { display: none; } /* Hide page label on mobile to save space */
+  
+  /* Hide zoom buttons on mobile (users will pinch to zoom) */
+  #zv, .b.i { display: none; }
+
+  /* Make sidebar full width when open on mobile */
+  #sb {
+    width: 100%;
+    position: absolute;
+    z-index: 200;
+  }
+  #sb.closed { margin-left: -100%; }
+
+  /* Slide-out panel takes full width */
+  #pn { width: 100%; right: -100%; }
+  #pn.open { right: 0; }
+
+  /* Adjust viewer padding for mobile */
+  #vw { padding: 10px 10px calc(var(--sh) + 10px); }
+  
+  /* Make arrows smaller */
+  .nv { width: 30px; height: 30px; font-size: 10px; }
+  #nl { left: 2px; }
+  #nr { right: 2px; }
+}

@@ -1,58 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HOB Magazine — Vol. 01</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HOB Magazine — Vol. 01</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<!-- Link to your new CSS file -->
+<link rel="stylesheet" href="CSS/style.css">
 </head>
 <body>
 
-  <header id="bar">
-    <div class="bl">
-      <span class="n">HOB</span><span class="p">|</span><span class="n">Magazine</span>
-      <span class="v">Vol.&thinsp;01 &mdash; The Core Ecosystem</span>
-    </div>
-    <div id="blabel">Cover</div>
-    <div class="br">
-      <button class="b on" id="bsb" onclick="toggleSB()" aria-label="Toggle Table of Contents">&#9776;&nbsp;Contents</button>
-      <button class="b on" id="bsp" onclick="setMode('spread')">Spread</button>
-      <button class="b" id="bpg" onclick="setMode('single')">Page</button>
-      <button class="b i" onclick="dz(-.15)" aria-label="Zoom Out">&#8722;</button>
-      <span id="zv">100%</span>
-      <button class="b i" onclick="dz(.15)" aria-label="Zoom In">+</button>
-    </div>
-  </header>
-
-  <div id="shell">
-    <nav id="sb">
-      <div class="sb-tip">Click any article to open a summary and jump to its spread.</div>
-      <div id="toc-container"></div> 
-    </nav>
-
-    <main id="vw">
-      <button class="nv off" id="nl" onclick="go(-1)" aria-label="Previous Page">&#8592;</button>
-      <div id="sp">
-        </div>
-      <button class="nv" id="nr" onclick="go(1)" aria-label="Next Page">&#8594;</button>
-    </main>
+<div id="bar">
+  <div class="bl">
+    <span class="n">HOB</span><span class="p">|</span><span class="n">Magazine</span>
+    <span class="v">Vol.&thinsp;01 &mdash; The Core Ecosystem</span>
   </div>
+  <div id="blabel">Cover</div>
+  <div class="br">
+    <button class="b on" id="bsb" onclick="toggleSB()">&#9776;&nbsp;Contents</button>
+    <button class="b on" id="bsp" onclick="setMode('spread')">Spread</button>
+    <button class="b" id="bpg" onclick="setMode('single')">Page</button>
+    <button class="b i" onclick="dz(-.15)">&#8722;</button>
+    <span id="zv">100%</span>
+    <button class="b i" onclick="dz(.15)">+</button>
+  </div>
+</div>
 
-  <nav id="strip"></nav>
+<div id="shell">
+  <div id="sb">
+    <div class="sb-tip">Click any article to open a summary and jump to its spread.</div>
+    <div class="ss"><div class="ssh"><span class="sd"></span>Introduction</div><div class="sa" data-key="ceo" onclick="openPanel('ceo')"><div class="sa-pg">p. 04</div><div class="sa-ttl">Note from the CEO</div></div></div><div class="ss"><div class="ssh"><span class="sd"></span>Section One — Corporate Profile</div><div class="sa" data-key="profile" onclick="openPanel('profile')"><div class="sa-pg">p. 08</div><div class="sa-ttl">House of Brands: Corporate Profile</div><div class="sa-sub">Purpose, vision, mission & values</div></div><div class="sa" data-key="ecosystem" onclick="openPanel('ecosystem')"><div class="sa-pg">p. 10</div><div class="sa-ttl">Our Ecosystem</div><div class="sa-sub">HOB Agency, Productions, The Woman Global, Elephants</div></div><div class="sa" data-key="expertise" onclick="openPanel('expertise')"><div class="sa-pg">p. 12</div><div class="sa-ttl">Our Expertise & Future Outlook</div></div><div class="sa" data-key="team" onclick="openPanel('team')"><div class="sa-pg">p. 14</div><div class="sa-ttl">Meet the Team</div><div class="sa-sub">The creatives behind HOB</div></div><div class="sa" data-key="elephants" onclick="openPanel('elephants')"><div class="sa-pg">p. 18</div><div class="sa-ttl">Elephants: Your Digital Ally</div></div></div><div class="ss"><div class="ssh"><span class="sd"></span>Section Two — Deep Dives</div><div class="sa" data-key="maritime" onclick="openPanel('maritime')"><div class="sa-pg">p. 22</div><div class="sa-ttl">Maritime: Anchoring Trust in a Global Industry</div></div><div class="sa" data-key="hospitality" onclick="openPanel('hospitality')"><div class="sa-pg">p. 23</div><div class="sa-ttl">Hospitality: Designing Memorable Guest Journeys</div></div><div class="sa" data-key="branding" onclick="openPanel('branding')"><div class="sa-pg">p. 28</div><div class="sa-ttl">Branding Below the Surface</div></div></div><div class="ss"><div class="ssh"><span class="sd"></span>Section Three — Thought Leadership</div><div class="sa" data-key="mktart" onclick="openPanel('mktart')"><div class="sa-pg">p. 32</div><div class="sa-ttl">Marketing is Not Art</div><div class="sa-sub">Why "Simple" Costs What it Costs</div></div><div class="sa" data-key="zing" onclick="openPanel('zing')"><div class="sa-pg">p. 34</div><div class="sa-ttl">The "Zing" Trap</div><div class="sa-sub">Why Personal Taste is the Enemy</div></div><div class="sa" data-key="blueprints" onclick="openPanel('blueprints')"><div class="sa-pg">p. 36</div><div class="sa-ttl">The "Blueprints" of Belief</div></div></div><div class="ss"><div class="ssh"><span class="sd"></span>Section Four — Digital Horizon</div><div class="sa" data-key="trends" onclick="openPanel('trends')"><div class="sa-pg">p. 40</div><div class="sa-ttl">Market Trends on Social Media</div></div><div class="sa" data-key="ai" onclick="openPanel('ai')"><div class="sa-pg">p. 42</div><div class="sa-ttl">AI + HI = FUTURE</div></div><div class="sa" data-key="podcast" onclick="openPanel('podcast')"><div class="sa-pg">p. 44</div><div class="sa-ttl">The Podcast Trend</div><div class="sa-sub">Meaningful Content or Just Digital Noise?</div></div><div class="sa" data-key="productions" onclick="openPanel('productions')"><div class="sa-pg">p. 46</div><div class="sa-ttl">HOB Productions</div><div class="sa-sub">Crafting Experiences, Capturing Impact</div></div><div class="sa" data-key="interns" onclick="openPanel('interns')"><div class="sa-pg">p. 52</div><div class="sa-ttl">The HOB Internship Experience</div></div><div class="sa" data-key="clients" onclick="openPanel('clients')"><div class="sa-pg">p. 54</div><div class="sa-ttl">Welcoming New Clients</div></div></div>
+  </div>
+  <div id="vw">
+    <button class="nv off" id="nl" onclick="go(-1)">&#8592;</button>
+    <div id="sp"></div>
+    <button class="nv" id="nr" onclick="go(1)">&#8594;</button>
+  </div>
+</div>
 
-  <aside id="pn">
-    <div id="ph">
-      <div>
-        <div id="pey"></div>
-        <div id="pti"></div>
-      </div>
-      <button class="pcl" onclick="closePn()" aria-label="Close Panel">&#215;</button>
-    </div>
-    <div id="pb"></div>
-  </aside>
+<div id="strip"></div>
 
-  <script src="js/data.js"></script>
-  <script src="js/script.js"></script>
+<div id="pn">
+  <div id="ph">
+    <div><div id="pey"></div><div id="pti"></div></div>
+    <button class="pcl" onclick="closePn()">&#215;</button>
+  </div>
+  <div id="pb"></div>
+</div>
+
+<!-- Link to your new JS file -->
+<script src="JS/script.js"></script>
 </body>
 </html>
