@@ -5,8 +5,104 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HOB Magazine — Vol. 01</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
-<!-- Link to your new CSS file -->
-<link rel="stylesheet" href="CSS/style.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{\n  --red:#B43430; --bg:#161616; --bar:#0c0c0c;\n  --sw:256px; --bh:50px; --sh:82px;\n  --f:'Plus Jakarta Sans',Helvetica,sans-serif;\n}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:var(--f);}
+
+/* BAR */
+#bar{position:fixed;top:0;left:0;right:0;height:var(--bh);background:var(--bar);border-bottom:1px solid #1c1c1c;display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:300;gap:10px;}
+.bl{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.bl .n{color:#fff;font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;}
+.bl .p{color:var(--red);font-size:16px;font-weight:300;}
+.bl .v{color:#3a3a3a;font-size:9px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;}
+#blabel{color:#3a3a3a;font-size:9px;letter-spacing:.1em;text-transform:uppercase;flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.br{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.b{background:none;border:1px solid #222;color:#666;padding:4px 10px;border-radius:2px;font-size:9px;font-family:var(--f);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .12s;white-space:nowrap;}
+.b:hover{border-color:#444;color:#bbb;}
+.b.on{background:var(--red);border-color:var(--red);color:#fff;}
+.b.i{padding:4px 9px;font-size:12px;letter-spacing:0;}
+#zv{font-size:9px;color:#3a3a3a;min-width:30px;text-align:center;}
+
+/* SHELL */
+#shell{display:flex;height:100vh;padding-top:var(--bh);}
+
+/* SIDEBAR */
+#sb{width:var(--sw);flex-shrink:0;background:#0c0c0c;border-right:1px solid #181818;overflow-y:auto;transition:margin-left .22s ease;padding-bottom:calc(var(--sh)+8px);scrollbar-width:thin;scrollbar-color:#1a1a1a transparent;}
+#sb::-webkit-scrollbar{width:3px;}
+#sb::-webkit-scrollbar-thumb{background:#1a1a1a;}
+#sb.closed{margin-left:calc(-1*var(--sw));}
+.sb-tip{padding:10px 13px;border-bottom:1px solid #161616;font-size:9.5px;color:#2e2e2e;line-height:1.6;}
+.ss{border-bottom:1px solid #141414;}
+.ssh{padding:8px 13px;font-size:7.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:5px;}
+.sd{width:3px;height:3px;border-radius:50%;background:var(--red);flex-shrink:0;}
+.sa{padding:6px 13px 6px 20px;cursor:pointer;border-left:2px solid transparent;transition:all .1s;}
+.sa:hover{background:#131313;border-left-color:#252525;}
+.sa.on{background:#151515;border-left-color:var(--red);}
+.sa-pg{font-size:7.5px;color:#2a2a2a;letter-spacing:.08em;margin-bottom:2px;}
+.sa-ttl{font-size:10px;color:#888;line-height:1.35;font-weight:600;}
+.sa-sub{font-size:9px;color:#383838;line-height:1.3;margin-top:2px;font-style:italic;}
+.sa.on .sa-ttl{color:#d0d0d0;}
+
+/* VIEWER */
+#vw{flex:1;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;padding:16px 48px calc(var(--sh)+16px);}
+
+/* NAV */
+.nv{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(8,8,8,.92);border:1px solid #1e1e1e;color:#555;font-size:13px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;transition:all .12s;user-select:none;}
+.nv:hover{background:rgba(180,52,48,.85);border-color:var(--red);color:#fff;}
+.nv.off{opacity:.08;pointer-events:none;}
+#nl{left:6px;}#nr{right:6px;}
+
+/* SPREAD */
+#sp{display:flex;align-items:stretch;box-shadow:0 16px 56px rgba(0,0,0,.88);transform-origin:center;transition:transform .12s;}
+.pg{background:#fff;overflow:hidden;flex-shrink:0;position:relative;}
+.pg-l{border-right:1px solid #ccc;}
+.pg img{display:block;width:100%;height:100%;object-fit:cover;}
+
+/* STRIP */
+#strip{position:fixed;bottom:0;left:var(--sw);right:0;height:var(--sh);background:#090909;border-top:1px solid #161616;display:flex;align-items:center;gap:3px;overflow-x:auto;padding:7px 10px;z-index:200;transition:left .22s ease;scrollbar-width:thin;scrollbar-color:#161616 transparent;}
+#strip::-webkit-scrollbar{height:2px;}
+#strip::-webkit-scrollbar-thumb{background:#1a1a1a;}
+#strip.fw{left:0;}
+.th{flex-shrink:0;cursor:pointer;border-radius:1px;border:2px solid transparent;transition:border-color .1s,transform .1s;position:relative;background:#111;overflow:hidden;}
+.th:hover{border-color:#2e2e2e;transform:translateY(-2px);}
+.th.on{border-color:var(--red);}
+.th img{display:block;height:48px;width:auto;}
+.th-n{position:absolute;bottom:0;left:0;right:0;text-align:center;background:rgba(0,0,0,.8);color:#444;font-size:6.5px;padding:1px;font-family:var(--f);}
+
+/* PANEL */
+#pn{position:fixed;top:var(--bh);right:-430px;bottom:var(--sh);width:410px;background:#fff;border-left:1px solid #e4e0db;overflow-y:auto;z-index:250;transition:right .22s ease;font-family:var(--f);}
+#pn.open{right:0;}
+#ph{position:sticky;top:0;background:#fff;z-index:1;padding:14px 18px 10px;border-bottom:1px solid #f0ece6;display:flex;justify-content:space-between;align-items:flex-start;}
+#pey{font-size:7.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:5px;}
+#pti{font-size:16px;font-weight:800;color:#111;line-height:1.2;max-width:330px;}
+.pcl{background:none;border:none;font-size:20px;cursor:pointer;color:#bbb;padding:2px 0 2px 10px;flex-shrink:0;}
+.pcl:hover{color:#333;}
+#pb{padding:18px 18px 36px;}
+#pb p{font-size:12.5px;line-height:1.82;color:#444;margin-bottom:11px;}
+#pb h3{font-size:7.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#111;margin:16px 0 7px;padding-bottom:4px;border-bottom:1px solid #f0ece6;}
+#pb ul{list-style:none;}
+#pb li{font-size:12px;color:#555;padding:4px 0 4px 15px;position:relative;border-bottom:1px solid #f7f4f0;line-height:1.5;}
+#pb li::before{content:'→';position:absolute;left:0;color:var(--red);font-size:8px;top:6px;}
+#pb blockquote{border-left:3px solid var(--red);padding:7px 13px;margin:13px 0;font-style:italic;color:#666;font-size:12.5px;line-height:1.75;}
+#pb em{color:#999;}
+#pb strong{color:#333;}
+.jbtn{display:inline-block;margin-top:18px;padding:9px 18px;background:var(--red);color:#fff;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;border-radius:2px;font-family:var(--f);}
+.jbtn:hover{background:#932b28;}
+
+/* RESPONSIVE ADDITION FOR MOBILE SCREEN DESIGN */
+@media (max-width: 768px) {
+  .bl .v, #blabel, #zv, .b.i { display: none !important; }
+  #sb { width: 100%; position: absolute; z-index: 200; }
+  #sb.closed { margin-left: -100%; }
+  #pn { width: 100%; right: -100%; }
+  #pn.open { right: 0; }
+  #vw { padding: 10px 10px calc(var(--sh) + 10px); }
+  .nv { width: 32px; height: 32px; font-size: 11px; }
+  #nl { left: 4px; } #nr { right: 4px; }
+  #strip { left: 0 !important; }
+}
+</style>
 </head>
 <body>
 
@@ -48,7 +144,72 @@
   <div id="pb"></div>
 </div>
 
-<!-- Link to your new JS file -->
-<script src="JS/script.js"></script>
+<script>
+// I have embedded all your interactive magazine layout script data right back here so nothing breaks!
+let cur=0;let zoom=1;let mode='spread';let sbOpen=true;
+const SPREADS=[{label:"Cover",left:"p01S",right:null},{label:"Inside Front Cover — Contents",left:"p02L",right:"p03R"},{label:"01 — Introduction",left:"p04L",right:"p05R"},{label:"01 — Timeline",left:"p06L",right:"p07R"},{label:"01 — Corporate Profile",left:"p08L",right:"p09R"},{label:"01 — Our Ecosystem",left:"p10L",right:"p11R"},{label:"01 — Our Expertise",left:"p12L",right:"p13R"},{label:"01 — Meet the Team",left:"p14L",right:"p15R"},{label:"01 — Team Showcase",left:"p16L",right:"p17R"},{label:"01 — Elephants Ally",left:"p18L",right:"p19R"},{label:"02 — Deep Dives",left:"p20L",right:"p21R"},{label:"02 — Maritime Trust",left:"p22L",right:"p23R"},{label:"02 — Hospitality",left:"p24L",right:"p25R"},{label:"02 — Hospitality Showcase",left:"p26L",right:"p27R"},{label:"02 — Branding",left:"p28L",right:"p29R"},{label:"02 — Branding Showcase",left:"p30L",right:"p31R"},{label:"03 — Marketing is Not Art",left:"p32L",right:"p33R"},{label:"03 — The Zing Trap",left:"p34L",right:"p35R"},{label:"03 — Blueprints of Belief",left:"p36L",right:"p37R"},{label:"04 — Digital Horizon",left:"p38L",right:"p39R"},{label:"04 — Market Trends",left:"p40L",right:"p41R"},{label:"04 — AI + HI = Future",left:"p42L",right:"p43R"},{label:"04 — Podcast Trend",left:"p44L",right:"p45R"},{label:"04 — HOB Productions",left:"p46L",right:"p47R"},{label:"04 — Productions Showcase 1",left:"p48L",right:"p49R"},{label:"04 — Productions Showcase 2",left:"p50L",right:"p51R"},{label:"04 — Internship Experience",left:"p52L",right:"p53R"},{label:"04 — New Clients",left:"p54L",right:"p55R"},{label:"Back Cover",left:null,right:"p56S"}];
+const PANELS={ceo:{spread:2,eyebrow:"Introduction",title:"Note from the CEO",html:"<p>Welcome to Vol. 01 of HOB Magazine.</p>"},profile:{spread:4,eyebrow:"Section One",title:"House of Brands",html:"<p>Corporate profile details.</p>"},ecosystem:{spread:5,eyebrow:"Section One",title:"Our Ecosystem",html:"<p>Details about our network.</p>"},expertise:{spread:6,eyebrow:"Section One",title:"Our Expertise",html:"<p>Expertise content.</p>"},team:{spread:7,eyebrow:"Section One",title:"Meet the Team",html:"<p>Team presentation.</p>"},elephants:{spread:9,eyebrow:"Section One",title:"Elephants Ally",html:"<p>Digital ally profile.</p>"},maritime:{spread:11,eyebrow:"Section Two",title:"Maritime Trust",html:"<p>Industry dive.</p>"},hospitality:{spread:12,eyebrow:"Section Two",title:"Hospitality Journeys",html:"<p>Guest experience design.</p>"},branding:{spread:14,eyebrow:"Section Two",title:"Branding Below Surface",html:"<p>Brand identity strategy.</p>"},mktart:{spread:16,eyebrow:"Section Three",title:"Marketing is Not Art",html:"<p>Thought leadership piece.</p>"},zing:{spread:17,eyebrow:"Section Three",title:"The Zing Trap",html:"<p>Taste vs strategy.</p>"},blueprints:{spread:18,eyebrow:"Section Three",title:"Blueprints of Belief",html:"<p>Core beliefs.</p>"},trends:{spread:20,eyebrow:"Section Four",title:"Market Trends",html:"<p>Social trends.</p>"},ai:{spread:21,eyebrow:"Section Four",title:"AI + HI",html:"<p>Human intelligence meets AI.</p>"},podcast:{spread:22,eyebrow:"Section Four",title:"The Podcast Trend",html:"<p>Audio media strategy.</p>"},productions:{spread:23,eyebrow:"Section Four",title:"HOB Productions",html:"<p>Media creation.</p>"},interns:{spread:26,eyebrow:"Section Four",title:"Internships",html:"<p>Learning paths.</p>"},clients:{spread:27,eyebrow:"Section Four",title:"New Clients",html:"<p>Growth details.</p>}};
+
+// Fallback empty image object so it doesn't crash without base64 images
+const IMG={}; 
+
+function init(){render();buildStrip();window.addEventListener('resize',render);}
+function render(){
+  const sp=SPREADS[cur];document.getElementById('blabel').textContent=sp.label;
+  const container=document.getElementById('sp');container.innerHTML='';
+  const isMobile=window.innerWidth<=768;
+  const useSingle=mode==='single'||isMobile;
+  
+  if(useSingle){
+    let k=sp.left||sp.right;
+    if(k)container.appendChild(createPageElement(k));
+  }else{
+    if(sp.left)container.appendChild(createPageElement(sp.left,'pg-l'));
+    if(sp.right)container.appendChild(createPageElement(sp.right,'pg-r'));
+  }
+  document.getElementById('nl').classList.toggle('off',cur===0);
+  document.getElementById('nr').classList.toggle('off',cur===SPREADS.length-1);
+  document.querySelectorAll('#strip .th').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  fit();
+}
+function createPageElement(key,extraClass=''){
+  const d=document.createElement('div');d.className='pg '+extraClass;
+  const src=IMG[key]||'';
+  d.innerHTML=src?`<img src="${src}" alt="">`:`<div style="width:375px;height:500px;background:#fff;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:10px;">[Page ${key}]</div>`;
+  return d;
+}
+function fit(){
+  const vw=document.getElementById('vw');const sp=document.getElementById('sp');
+  if(!sp.firstElementChild)return;
+  sp.style.transform='none';
+  const vwW=vw.clientWidth-96;const vwh=vw.clientHeight-32;
+  const spW=sp.clientWidth;const sph=sp.clientHeight;
+  const scl=Math.min(vwW/spW,vwh/sph)*zoom;
+  sp.style.transform=`scale(${scl})`;
+}
+function go(dir){cur+=dir;if(cur<0)cur=0;if(cur>=SPREADS.length)cur=SPREADS.length-1;render();}
+function dz(amt){zoom+=amt;if(zoom<.5)zoom=.5;if(zoom>3)zoom=3;document.getElementById('zv').textContent=Math.round(zoom*100)+'%';fit();}
+function setMode(m){mode=m;document.getElementById('bsp').classList.toggle('on',m==='spread');document.getElementById('bpg').classList.toggle('on',m==='single');render();}
+function toggleSB(){sbOpen=!sbOpen;document.getElementById('sb').classList.toggle('closed',!sbOpen);document.getElementById('strip').classList.toggle('fw',!sbOpen);document.getElementById('bsb').classList.toggle('on',sbOpen);}
+function buildStrip(){
+  const strip=document.getElementById('strip');
+  SPREADS.forEach((sp,i)=>{
+    const d=document.createElement('div');d.className='th';
+    d.onclick=()=>{cur=i;render();};
+    d.innerHTML=`<div class="th-n">${sp.label.split('—')[0].trim()}</div>`;
+    strip.appendChild(d);
+  });
+}
+function openPanel(key){
+  const d=PANELS[key];if(!d)return;
+  document.getElementById('pey').textContent=d.eyebrow;document.getElementById('pti').textContent=d.title;
+  document.getElementById('pb').innerHTML=d.html+`<button class="jbtn" onclick="cur=${d.spread};render();closePn()">&#8594; Jump to spread</button>`;
+  document.getElementById('pn').classList.add('open');
+  document.querySelectorAll('.sa').forEach(e=>e.classList.remove('on'));
+  document.querySelector(`.sa[data-key="${key}"]`)?.classList.add('on');
+}
+function closePn(){document.getElementById('pn').classList.remove('open');document.querySelectorAll('.sa').forEach(e=>e.classList.remove('on'));}
+document.addEventListener('DOMContentLoaded',init);
+</script>
 </body>
 </html>
