@@ -1,215 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HOB Magazine — Vol. 01</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-:root{\n  --red:#B43430; --bg:#161616; --bar:#0c0c0c;\n  --sw:256px; --bh:50px; --sh:82px;\n  --f:'Plus Jakarta Sans',Helvetica,sans-serif;\n}
-html,body{height:100%;overflow:hidden;background:var(--bg);font-family:var(--f);}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOB Magazine — Vol. 01</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    /* 1. RESET & BASE DESIGN */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #111111; /* Sleek dark background */
+      color: #ffffff;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow: hidden; /* Stops normal scrolling so we can "flip" pages */
+    }
 
-/* BAR */
-#bar{position:fixed;top:0;left:0;right:0;height:var(--bh);background:var(--bar);border-bottom:1px solid #1c1c1c;display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:300;gap:10px;}
-.bl{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.bl .n{color:#fff;font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;}
-.bl .p{color:var(--red);font-size:16px;font-weight:300;}
-.bl .v{color:#3a3a3a;font-size:9px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;}
-#blabel{color:#3a3a3a;font-size:9px;letter-spacing:.1em;text-transform:uppercase;flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.br{display:flex;align-items:center;gap:4px;flex-shrink:0;}
-.b{background:none;border:1px solid #222;color:#666;padding:4px 10px;border-radius:2px;font-size:9px;font-family:var(--f);letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .12s;white-space:nowrap;}
-.b:hover{border-color:#444;color:#bbb;}
-.b.on{background:var(--red);border-color:var(--red);color:#fff;}
-.b.i{padding:4px 9px;font-size:12px;letter-spacing:0;}
-#zv{font-size:9px;color:#3a3a3a;min-width:30px;text-align:center;}
+    /* 2. NAVIGATION OVERLAY */
+    .top-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      z-index: 100;
+      border-bottom: 1px solid #333;
+      background: rgba(17, 17, 17, 0.9);
+    }
+    .logo { font-weight: 800; letter-spacing: 2px; }
+    .menu-btn { background: none; border: none; color: #fff; cursor: pointer; font-size: 16px; font-weight: 600; }
 
-/* SHELL */
-#shell{display:flex;height:100vh;padding-top:var(--bh);}
+    /* 3. THE MAGAZINE VIEWER */
+    #magazine {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-/* SIDEBAR */
-#sb{width:var(--sw);flex-shrink:0;background:#0c0c0c;border-right:1px solid #181818;overflow-y:auto;transition:margin-left .22s ease;padding-bottom:calc(var(--sh)+8px);scrollbar-width:thin;scrollbar-color:#1a1a1a transparent;}
-#sb::-webkit-scrollbar{width:3px;}
-#sb::-webkit-scrollbar-thumb{background:#1a1a1a;}
-#sb.closed{margin-left:calc(-1*var(--sw));}
-.sb-tip{padding:10px 13px;border-bottom:1px solid #161616;font-size:9.5px;color:#2e2e2e;line-height:1.6;}
-.ss{border-bottom:1px solid #141414;}
-.ssh{padding:8px 13px;font-size:7.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:5px;}
-.sd{width:3px;height:3px;border-radius:50%;background:var(--red);flex-shrink:0;}
-.sa{padding:6px 13px 6px 20px;cursor:pointer;border-left:2px solid transparent;transition:all .1s;}
-.sa:hover{background:#131313;border-left-color:#252525;}
-.sa.on{background:#151515;border-left-color:var(--red);}
-.sa-pg{font-size:7.5px;color:#2a2a2a;letter-spacing:.08em;margin-bottom:2px;}
-.sa-ttl{font-size:10px;color:#888;line-height:1.35;font-weight:600;}
-.sa-sub{font-size:9px;color:#383838;line-height:1.3;margin-top:2px;font-style:italic;}
-.sa.on .sa-ttl{color:#d0d0d0;}
+    /* 4. THE PAGES */
+    .spread {
+      position: absolute;
+      width: 90%;
+      height: 80%;
+      display: flex;
+      gap: 40px;
+      opacity: 0;
+      transform: translateX(100px); /* Starts slightly off-screen */
+      transition: all 0.6s ease-in-out; /* Smooth sliding animation */
+      pointer-events: none;
+    }
+    .spread.active {
+      opacity: 1;
+      transform: translateX(0); /* Slides into the center */
+      pointer-events: auto;
+    }
+    .page {
+      flex: 1;
+      background: #1a1a1a;
+      padding: 60px;
+      border-radius: 4px;
+      overflow-y: auto;
+    }
 
-/* VIEWER */
-#vw{flex:1;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;padding:16px 48px calc(var(--sh)+16px);}
+    /* 5. TYPOGRAPHY */
+    h1 { font-size: 48px; color: #B43430; margin-bottom: 20px; line-height: 1.1; }
+    h2 { font-size: 24px; color: #ffffff; margin-bottom: 10px; margin-top: 30px; }
+    p { font-size: 16px; color: #cccccc; line-height: 1.6; margin-bottom: 20px; }
+    ul { margin-left: 20px; color: #aaaaaa; font-size: 14px; line-height: 1.8; }
 
-/* NAV */
-.nv{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(8,8,8,.92);border:1px solid #1e1e1e;color:#555;font-size:13px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;transition:all .12s;user-select:none;}
-.nv:hover{background:rgba(180,52,48,.85);border-color:var(--red);color:#fff;}
-.nv.off{opacity:.08;pointer-events:none;}
-#nl{left:6px;}#nr{right:6px;}
+    /* 6. FLIP ARROWS */
+    .arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: 1px solid #555;
+      color: #fff;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+      z-index: 100;
+      transition: background 0.3s;
+    }
+    .arrow:hover { background: #B43430; border-color: #B43430; }
+    #prev-btn { left: 20px; }
+    #next-btn { right: 20px; }
 
-/* SPREAD */
-#sp{display:flex;align-items:stretch;box-shadow:0 16px 56px rgba(0,0,0,.88);transform-origin:center;transition:transform .12s;}
-.pg{background:#fff;overflow:hidden;flex-shrink:0;position:relative;}
-.pg-l{border-right:1px solid #ccc;}
-.pg img{display:block;width:100%;height:100%;object-fit:cover;}
-
-/* STRIP */
-#strip{position:fixed;bottom:0;left:var(--sw);right:0;height:var(--sh);background:#090909;border-top:1px solid #161616;display:flex;align-items:center;gap:3px;overflow-x:auto;padding:7px 10px;z-index:200;transition:left .22s ease;scrollbar-width:thin;scrollbar-color:#161616 transparent;}
-#strip::-webkit-scrollbar{height:2px;}
-#strip::-webkit-scrollbar-thumb{background:#1a1a1a;}
-#strip.fw{left:0;}
-.th{flex-shrink:0;cursor:pointer;border-radius:1px;border:2px solid transparent;transition:border-color .1s,transform .1s;position:relative;background:#111;overflow:hidden;}
-.th:hover{border-color:#2e2e2e;transform:translateY(-2px);}
-.th.on{border-color:var(--red);}
-.th img{display:block;height:48px;width:auto;}
-.th-n{position:absolute;bottom:0;left:0;right:0;text-align:center;background:rgba(0,0,0,.8);color:#444;font-size:6.5px;padding:1px;font-family:var(--f);}
-
-/* PANEL */
-#pn{position:fixed;top:var(--bh);right:-430px;bottom:var(--sh);width:410px;background:#fff;border-left:1px solid #e4e0db;overflow-y:auto;z-index:250;transition:right .22s ease;font-family:var(--f);}
-#pn.open{right:0;}
-#ph{position:sticky;top:0;background:#fff;z-index:1;padding:14px 18px 10px;border-bottom:1px solid #f0ece6;display:flex;justify-content:space-between;align-items:flex-start;}
-#pey{font-size:7.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:5px;}
-#pti{font-size:16px;font-weight:800;color:#111;line-height:1.2;max-width:330px;}
-.pcl{background:none;border:none;font-size:20px;cursor:pointer;color:#bbb;padding:2px 0 2px 10px;flex-shrink:0;}
-.pcl:hover{color:#333;}
-#pb{padding:18px 18px 36px;}
-#pb p{font-size:12.5px;line-height:1.82;color:#444;margin-bottom:11px;}
-#pb h3{font-size:7.5px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#111;margin:16px 0 7px;padding-bottom:4px;border-bottom:1px solid #f0ece6;}
-#pb ul{list-style:none;}
-#pb li{font-size:12px;color:#555;padding:4px 0 4px 15px;position:relative;border-bottom:1px solid #f7f4f0;line-height:1.5;}
-#pb li::before{content:'→';position:absolute;left:0;color:var(--red);font-size:8px;top:6px;}
-#pb blockquote{border-left:3px solid var(--red);padding:7px 13px;margin:13px 0;font-style:italic;color:#666;font-size:12.5px;line-height:1.75;}
-#pb em{color:#999;}
-#pb strong{color:#333;}
-.jbtn{display:inline-block;margin-top:18px;padding:9px 18px;background:var(--red);color:#fff;font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:none;cursor:pointer;border-radius:2px;font-family:var(--f);}
-.jbtn:hover{background:#932b28;}
-
-/* RESPONSIVE ADDITION FOR MOBILE SCREEN DESIGN */
-@media (max-width: 768px) {
-  .bl .v, #blabel, #zv, .b.i { display: none !important; }
-  #sb { width: 100%; position: absolute; z-index: 200; }
-  #sb.closed { margin-left: -100%; }
-  #pn { width: 100%; right: -100%; }
-  #pn.open { right: 0; }
-  #vw { padding: 10px 10px calc(var(--sh) + 10px); }
-  .nv { width: 32px; height: 32px; font-size: 11px; }
-  #nl { left: 4px; } #nr { right: 4px; }
-  #strip { left: 0 !important; }
-}
-</style>
+    /* MOBILE RESPONSIVENESS */
+    @media (max-width: 768px) {
+      .spread { flex-direction: column; height: 85%; width: 100%; top: 80px; gap: 10px; }
+      .page { padding: 30px; }
+      h1 { font-size: 32px; }
+    }
+  </style>
 </head>
 <body>
 
-<div id="bar">
-  <div class="bl">
-    <span class="n">HOB</span><span class="p">|</span><span class="n">Magazine</span>
-    <span class="v">Vol.&thinsp;01 &mdash; The Core Ecosystem</span>
+  <!-- NAVIGATION -->
+  <nav class="top-nav">
+    <div class="logo">HOB | MAGAZINE</div>
+    <button class="menu-btn">TABLE OF CONTENTS</button>
+  </nav>
+
+  <!-- MAGAZINE CONTAINER -->
+  <div id="magazine">
+
+    <!-- SPREAD 1: COVER -->
+    <div class="spread active" id="spread-0">
+      <div class="page" style="display: flex; align-items: center; justify-content: center; text-align: center;">
+        <div>
+          <h1 style="font-size: 80px; margin-bottom: 10px;">H</h1>
+          <p style="font-size: 20px; letter-spacing: 2px;">House of Brands Creative Ecosystem</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPREAD 2: OUR ECOSYSTEM -->
+    <div class="spread" id="spread-1">
+      <!-- Left Page -->
+      <div class="page">
+        <h1>OUR ECOSYSTEM</h1>
+        <p>House of Brands is an integrated ecosystem of specialized entities that complement and strengthen each other. Together, they deliver a 360-degree approach to branding, marketing, and innovation.</p>
+        
+        <h2>HOB Branding & Marketing Agency</h2>
+        <p>Crafting authentic, strategic brands from inception to growth.</p>
+        <ul>
+          <li>Brand Development & Strategy</li>
+          <li>Creative Studio Services</li>
+          <li>Strategic Marketing</li>
+        </ul>
+
+        <h2>The Woman Global</h2>
+        <p>Amplifying women's voices and reshaping narratives.</p>
+        <ul>
+          <li>Podcast Series & Digital Magazine</li>
+          <li>Women-Led Business Crowdfunding</li>
+        </ul>
+      </div>
+
+      <!-- Right Page -->
+      <div class="page">
+        <h2>HOB Productions</h2>
+        <p>Crafting experiences, capturing impact.</p>
+        <ul>
+          <li>Event Production & Management</li>
+          <li>Video Production (Corporate, TVCs, Social)</li>
+          <li>Motion Graphics & Reels</li>
+        </ul>
+
+        <h2>Elephants | Your Digital Ally</h2>
+        <p>Driving digital transformation through technology.</p>
+        <ul>
+          <li>Scalable App & Mega-App Development</li>
+          <li>AI Integration for Businesses</li>
+          <li>E-Commerce Platforms & Automation Solutions</li>
+        </ul>
+        
+        <!-- Placeholder for Video -->
+        <div style="margin-top: 40px; padding: 40px; border: 2px dashed #B43430; text-align: center; color: #B43430;">
+          [ Interactive Video Element Will Go Here ]
+        </div>
+      </div>
+    </div>
+
   </div>
-  <div id="blabel">Cover</div>
-  <div class="br">
-    <button class="b on" id="bsb" onclick="toggleSB()">&#9776;&nbsp;Contents</button>
-    <button class="b on" id="bsp" onclick="setMode('spread')">Spread</button>
-    <button class="b" id="bpg" onclick="setMode('single')">Page</button>
-    <button class="b i" onclick="dz(-.15)">&#8722;</button>
-    <span id="zv">100%</span>
-    <button class="b i" onclick="dz(.15)">+</button>
-  </div>
-</div>
 
-<div id="shell">
-  <div id="sb">
-    <div class="sb-tip">Click any article to open a summary and jump to its spread.</div>
-    <div class="ss"><div class="ssh"><span class="sd"></span>Introduction</div><div class="sa" data-key="ceo" onclick="openPanel('ceo')"><div class="sa-pg">p. 04</div><div class="sa-ttl">Note from the CEO</div></div></div><div class="ss"><div class="ssh"><span class="sd"></span>Section One — Corporate Profile</div><div class="sa" data-key="profile" onclick="openPanel('profile')"><div class="sa-pg">p. 08</div><div class="sa-ttl">House of Brands: Corporate Profile</div><div class="sa-sub">Purpose, vision, mission & values</div></div><div class="sa" data-key="ecosystem" onclick="openPanel('ecosystem')"><div class="sa-pg">p. 10</div><div class="sa-ttl">Our Ecosystem</div><div class="sa-sub">HOB Agency, Productions, The Woman Global, Elephants</div></div><div class="sa" data-key="expertise" onclick="openPanel('expertise')"><div class="sa-pg">p. 12</div><div class="sa-ttl">Our Expertise & Future Outlook</div></div><div class="sa" data-key="team" onclick="openPanel('team')"><div class="sa-pg">p. 14</div><div class="sa-ttl">Meet the Team</div><div class="sa-sub">The creatives behind HOB</div></div><div class="sa" data-key="elephants" onclick="openPanel('elephants')"><div class="sa-pg">p. 18</div><div class="sa-ttl">Elephants: Your Digital Ally</div></div></div><div class="ss"><div class="ssh"><span class="sd"></span>Section Two — Deep Dives</div><div class="sa" data-key="maritime" onclick="openPanel('maritime')"><div class="sa-pg">p. 22</div><div class="sa-ttl">Maritime: Anchoring Trust in a Global Industry</div></div><div class="sa" data-key="hospitality" onclick="openPanel('hospitality')"><div class="sa-pg">p. 23</div><div class="sa-ttl">Hospitality: Designing Memorable Guest Journeys</div></div><div class="sa" data-key="branding" onclick="openPanel('branding')"><div class="sa-pg">p. 28</div><div class="sa-ttl">Branding Below the Surface</div></div></div><div class="ss"><div class="ssh"><span class="sd"></span>Section Three — Thought Leadership</div><div class="sa" data-key="mktart" onclick="openPanel('mktart')"><div class="sa-pg">p. 32</div><div class="sa-ttl">Marketing is Not Art</div><div class="sa-sub">Why "Simple" Costs What it Costs</div></div><div class="sa" data-key="zing" onclick="openPanel('zing')"><div class="sa-pg">p. 34</div><div class="sa-ttl">The "Zing" Trap</div><div class="sa-sub">Why Personal Taste is the Enemy</div></div><div class="sa" data-key="blueprints" onclick="openPanel('blueprints')"><div class="sa-pg">p. 36</div><div class="sa-ttl">The "Blueprints" of Belief</div></div></div><div class="ss"><div class="ssh"><span class="sd"></span>Section Four — Digital Horizon</div><div class="sa" data-key="trends" onclick="openPanel('trends')"><div class="sa-pg">p. 40</div><div class="sa-ttl">Market Trends on Social Media</div></div><div class="sa" data-key="ai" onclick="openPanel('ai')"><div class="sa-pg">p. 42</div><div class="sa-ttl">AI + HI = FUTURE</div></div><div class="sa" data-key="podcast" onclick="openPanel('podcast')"><div class="sa-pg">p. 44</div><div class="sa-ttl">The Podcast Trend</div><div class="sa-sub">Meaningful Content or Just Digital Noise?</div></div><div class="sa" data-key="productions" onclick="openPanel('productions')"><div class="sa-pg">p. 46</div><div class="sa-ttl">HOB Productions</div><div class="sa-sub">Crafting Experiences, Capturing Impact</div></div><div class="sa" data-key="interns" onclick="openPanel('interns')"><div class="sa-pg">p. 52</div><div class="sa-ttl">The HOB Internship Experience</div></div><div class="sa" data-key="clients" onclick="openPanel('clients')"><div class="sa-pg">p. 54</div><div class="sa-ttl">Welcoming New Clients</div></div></div>
-  </div>
-  <div id="vw">
-    <button class="nv off" id="nl" onclick="go(-1)">&#8592;</button>
-    <div id="sp"></div>
-    <button class="nv" id="nr" onclick="go(1)">&#8594;</button>
-  </div>
-</div>
+  <!-- FLIP BUTTONS -->
+  <button class="arrow" id="prev-btn" onclick="turnPage(-1)">&#8592;</button>
+  <button class="arrow" id="next-btn" onclick="turnPage(1)">&#8594;</button>
 
-<div id="strip"></div>
+  <script>
+    let currentSpread = 0;
+    const spreads = document.querySelectorAll('.spread');
 
-<div id="pn">
-  <div id="ph">
-    <div><div id="pey"></div><div id="pti"></div></div>
-    <button class="pcl" onclick="closePn()">&#215;</button>
-  </div>
-  <div id="pb"></div>
-</div>
+    function turnPage(direction) {
+      // Remove active class from current spread
+      spreads[currentSpread].classList.remove('active');
+      
+      // Calculate new spread index
+      currentSpread += direction;
+      
+      // Prevent going out of bounds
+      if (currentSpread < 0) currentSpread = 0;
+      if (currentSpread >= spreads.length) currentSpread = spreads.length - 1;
+      
+      // Add active class to new spread
+      spreads[currentSpread].classList.add('active');
+    }
+  </script>
 
-<script>
-// I have embedded all your interactive magazine layout script data right back here so nothing breaks!
-let cur=0;let zoom=1;let mode='spread';let sbOpen=true;
-const SPREADS=[{label:"Cover",left:"p01S",right:null},{label:"Inside Front Cover — Contents",left:"p02L",right:"p03R"},{label:"01 — Introduction",left:"p04L",right:"p05R"},{label:"01 — Timeline",left:"p06L",right:"p07R"},{label:"01 — Corporate Profile",left:"p08L",right:"p09R"},{label:"01 — Our Ecosystem",left:"p10L",right:"p11R"},{label:"01 — Our Expertise",left:"p12L",right:"p13R"},{label:"01 — Meet the Team",left:"p14L",right:"p15R"},{label:"01 — Team Showcase",left:"p16L",right:"p17R"},{label:"01 — Elephants Ally",left:"p18L",right:"p19R"},{label:"02 — Deep Dives",left:"p20L",right:"p21R"},{label:"02 — Maritime Trust",left:"p22L",right:"p23R"},{label:"02 — Hospitality",left:"p24L",right:"p25R"},{label:"02 — Hospitality Showcase",left:"p26L",right:"p27R"},{label:"02 — Branding",left:"p28L",right:"p29R"},{label:"02 — Branding Showcase",left:"p30L",right:"p31R"},{label:"03 — Marketing is Not Art",left:"p32L",right:"p33R"},{label:"03 — The Zing Trap",left:"p34L",right:"p35R"},{label:"03 — Blueprints of Belief",left:"p36L",right:"p37R"},{label:"04 — Digital Horizon",left:"p38L",right:"p39R"},{label:"04 — Market Trends",left:"p40L",right:"p41R"},{label:"04 — AI + HI = Future",left:"p42L",right:"p43R"},{label:"04 — Podcast Trend",left:"p44L",right:"p45R"},{label:"04 — HOB Productions",left:"p46L",right:"p47R"},{label:"04 — Productions Showcase 1",left:"p48L",right:"p49R"},{label:"04 — Productions Showcase 2",left:"p50L",right:"p51R"},{label:"04 — Internship Experience",left:"p52L",right:"p53R"},{label:"04 — New Clients",left:"p54L",right:"p55R"},{label:"Back Cover",left:null,right:"p56S"}];
-const PANELS={ceo:{spread:2,eyebrow:"Introduction",title:"Note from the CEO",html:"<p>Welcome to Vol. 01 of HOB Magazine.</p>"},profile:{spread:4,eyebrow:"Section One",title:"House of Brands",html:"<p>Corporate profile details.</p>"},ecosystem:{spread:5,eyebrow:"Section One",title:"Our Ecosystem",html:"<p>Details about our network.</p>"},expertise:{spread:6,eyebrow:"Section One",title:"Our Expertise",html:"<p>Expertise content.</p>"},team:{spread:7,eyebrow:"Section One",title:"Meet the Team",html:"<p>Team presentation.</p>"},elephants:{spread:9,eyebrow:"Section One",title:"Elephants Ally",html:"<p>Digital ally profile.</p>"},maritime:{spread:11,eyebrow:"Section Two",title:"Maritime Trust",html:"<p>Industry dive.</p>"},hospitality:{spread:12,eyebrow:"Section Two",title:"Hospitality Journeys",html:"<p>Guest experience design.</p>"},branding:{spread:14,eyebrow:"Section Two",title:"Branding Below Surface",html:"<p>Brand identity strategy.</p>"},mktart:{spread:16,eyebrow:"Section Three",title:"Marketing is Not Art",html:"<p>Thought leadership piece.</p>"},zing:{spread:17,eyebrow:"Section Three",title:"The Zing Trap",html:"<p>Taste vs strategy.</p>"},blueprints:{spread:18,eyebrow:"Section Three",title:"Blueprints of Belief",html:"<p>Core beliefs.</p>"},trends:{spread:20,eyebrow:"Section Four",title:"Market Trends",html:"<p>Social trends.</p>"},ai:{spread:21,eyebrow:"Section Four",title:"AI + HI",html:"<p>Human intelligence meets AI.</p>"},podcast:{spread:22,eyebrow:"Section Four",title:"The Podcast Trend",html:"<p>Audio media strategy.</p>"},productions:{spread:23,eyebrow:"Section Four",title:"HOB Productions",html:"<p>Media creation.</p>"},interns:{spread:26,eyebrow:"Section Four",title:"Internships",html:"<p>Learning paths.</p>"},clients:{spread:27,eyebrow:"Section Four",title:"New Clients",html:"<p>Growth details.</p>}};
-
-// Fallback empty image object so it doesn't crash without base64 images
-const IMG={}; 
-
-function init(){render();buildStrip();window.addEventListener('resize',render);}
-function render(){
-  const sp=SPREADS[cur];document.getElementById('blabel').textContent=sp.label;
-  const container=document.getElementById('sp');container.innerHTML='';
-  const isMobile=window.innerWidth<=768;
-  const useSingle=mode==='single'||isMobile;
-  
-  if(useSingle){
-    let k=sp.left||sp.right;
-    if(k)container.appendChild(createPageElement(k));
-  }else{
-    if(sp.left)container.appendChild(createPageElement(sp.left,'pg-l'));
-    if(sp.right)container.appendChild(createPageElement(sp.right,'pg-r'));
-  }
-  document.getElementById('nl').classList.toggle('off',cur===0);
-  document.getElementById('nr').classList.toggle('off',cur===SPREADS.length-1);
-  document.querySelectorAll('#strip .th').forEach((d,i)=>d.classList.toggle('on',i===cur));
-  fit();
-}
-function createPageElement(key,extraClass=''){
-  const d=document.createElement('div');d.className='pg '+extraClass;
-  const src=IMG[key]||'';
-  d.innerHTML=src?`<img src="${src}" alt="">`:`<div style="width:375px;height:500px;background:#fff;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:10px;">[Page ${key}]</div>`;
-  return d;
-}
-function fit(){
-  const vw=document.getElementById('vw');const sp=document.getElementById('sp');
-  if(!sp.firstElementChild)return;
-  sp.style.transform='none';
-  const vwW=vw.clientWidth-96;const vwh=vw.clientHeight-32;
-  const spW=sp.clientWidth;const sph=sp.clientHeight;
-  const scl=Math.min(vwW/spW,vwh/sph)*zoom;
-  sp.style.transform=`scale(${scl})`;
-}
-function go(dir){cur+=dir;if(cur<0)cur=0;if(cur>=SPREADS.length)cur=SPREADS.length-1;render();}
-function dz(amt){zoom+=amt;if(zoom<.5)zoom=.5;if(zoom>3)zoom=3;document.getElementById('zv').textContent=Math.round(zoom*100)+'%';fit();}
-function setMode(m){mode=m;document.getElementById('bsp').classList.toggle('on',m==='spread');document.getElementById('bpg').classList.toggle('on',m==='single');render();}
-function toggleSB(){sbOpen=!sbOpen;document.getElementById('sb').classList.toggle('closed',!sbOpen);document.getElementById('strip').classList.toggle('fw',!sbOpen);document.getElementById('bsb').classList.toggle('on',sbOpen);}
-function buildStrip(){
-  const strip=document.getElementById('strip');
-  SPREADS.forEach((sp,i)=>{
-    const d=document.createElement('div');d.className='th';
-    d.onclick=()=>{cur=i;render();};
-    d.innerHTML=`<div class="th-n">${sp.label.split('—')[0].trim()}</div>`;
-    strip.appendChild(d);
-  });
-}
-function openPanel(key){
-  const d=PANELS[key];if(!d)return;
-  document.getElementById('pey').textContent=d.eyebrow;document.getElementById('pti').textContent=d.title;
-  document.getElementById('pb').innerHTML=d.html+`<button class="jbtn" onclick="cur=${d.spread};render();closePn()">&#8594; Jump to spread</button>`;
-  document.getElementById('pn').classList.add('open');
-  document.querySelectorAll('.sa').forEach(e=>e.classList.remove('on'));
-  document.querySelector(`.sa[data-key="${key}"]`)?.classList.add('on');
-}
-function closePn(){document.getElementById('pn').classList.remove('open');document.querySelectorAll('.sa').forEach(e=>e.classList.remove('on'));}
-document.addEventListener('DOMContentLoaded',init);
-</script>
 </body>
 </html>
